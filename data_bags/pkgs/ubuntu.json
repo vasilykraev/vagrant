@@ -1,0 +1,8 @@
+{
+  "id"    : "ubuntu",
+  "pkgs"  : [
+    { "name"    : "make" },
+    { "name"    : "mc" },
+    { "name"    : "htop" }
+  ]
+}

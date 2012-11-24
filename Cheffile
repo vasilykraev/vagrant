@@ -1,0 +1,42 @@
+#!/usr/bin/env ruby
+#^syntax detection
+
+site 'http://community.opscode.com/api/v1'
+
+site 'http://community.opscode.com/api/v1'
+
+cookbook 'chef-client'
+
+cookbook "apache2"
+cookbook "apt"
+cookbook "build-essential"
+cookbook "git"
+cookbook "mysql"
+cookbook "nginx"
+cookbook "openssl"
+cookbook "php"
+cookbook "postfix"
+cookbook "postgresql"
+cookbook "python"
+cookbook "varnish"
+cookbook "zsh"
+
+cookbook 'drush',
+  :git => 'https://github.com/msonnabaum/chef-drush.git',
+  :ref => 'master'
+
+cookbook 'platform_packages',
+  :git => 'git://github.com/fnichol/chef-platform_packages.git', 
+  :ref => 'master'
+
+cookbook 'postgis2',
+  :git => 'git://github.com/rogelio2k/chef-cookbook-postgis2.git', 
+  :ref => 'master'
+
+cookbook 'phpmyadmin',
+  :git => 'git://github.com/priestjim/chef-phpmyadmin.git', 
+  :ref => 'master'
+
+cookbook 'phppgadmin',
+  :git => 'git://github.com/arnebrasseur/chef-phppgadmin.git', 
+  :ref => 'master'
