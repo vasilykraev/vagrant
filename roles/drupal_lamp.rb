@@ -5,7 +5,7 @@ run_list(
   "recipe[apache2::mod_ssl]",
   "recipe[apache2::mod_expires]",
   "recipe[apache2::mod_php5]",
-  "recipe[apache2::mod_rewrite]"
+  "recipe[apache2::mod_rewrite]",
   "recipe[mysql::server]",
   "recipe[php::package]",
   "recipe[php::module_mysql]",

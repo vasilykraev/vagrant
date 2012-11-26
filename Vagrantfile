@@ -22,11 +22,11 @@ Vagrant::Config.run do |config|
 
   # host, bridge
   network = "host"
-  use_nfs = true
 
   if network == "host" 
     config.vm.network :hostonly, "33.33.33.10"
-    config.vm.forward_port 80, 8080
+    config.vm.forward_port 80, 8000
+    config.vm.forward_port 8080, 8080
     config.vm.forward_port 3306, 3306
     config.vm.forward_port 5432, 5432
     config.vm.share_folder "v-data", "/vagrant", ".", :nfs => true
@@ -69,18 +69,31 @@ Vagrant::Config.run do |config|
         },
         :postgresql => {
           :password => {
-            :postgres => "root"
+            :postgres => "root",
           },
+          # configure pgsql to allow remote connections
+          :pg_hba => [
+            {:type => 'local', :db => 'all', :user => 'postgres', :addr => nil, :method => 'ident'},
+            {:type => 'local', :db => 'all', :user => 'all', :addr => nil, :method => 'md5'},
+            {:type => 'host', :db => 'all', :user => 'all', :addr => '0.0.0.0/0', :method => 'md5'},
+            {:type => 'host', :db => 'all', :user => 'all', :addr => '::1/128', :method => 'md5'},
+          ],
           :config => {
-            :listen_addresses => "*"
-          }
+            :listen_addresses => "*",
+            :ssl => false,
+          },
+          :dbuser => 'air',
+          :dbname => 'air',
         },
         :drupal => {
-          :hosts => ["d7.vm", "dev.vm"]
+          :hosts => ["air.vm", "dev.vm"],
         },
         :drush => {
          :install_method => 'pear',
          :version => '5.7.0',
+        },
+        :phing => {
+          :version => '2.3.3',
         }
   	  })
       # f = File.open("del_me_to_first_run", "w")

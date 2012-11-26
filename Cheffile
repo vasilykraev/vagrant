@@ -30,7 +30,7 @@ cookbook 'platform_packages',
   :ref => 'master'
 
 cookbook 'postgis2',
-  :git => 'git://github.com/rogelio2k/chef-cookbook-postgis2.git', 
+  :git => 'git://github.com/vasilykraev/cookbook-postgis.git', 
   :ref => 'master'
 
 cookbook 'phpmyadmin',
