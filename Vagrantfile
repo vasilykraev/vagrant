@@ -84,6 +84,7 @@ Vagrant::Config.run do |config|
           },
           :dbuser => 'air',
           :dbname => 'air',
+          :dbpass => 'airpwd',
         },
         :drupal => {
           :hosts => ["air.vm", "dev.vm"],

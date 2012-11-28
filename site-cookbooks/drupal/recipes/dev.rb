@@ -38,6 +38,7 @@ include_recipe "postgis2::fix_locale"
 include_recipe "postgresql::server"
 
 # execute "create-root-user" do
+#     user "postgres"
 #     code = <<-EOH
 #     sudo -u postgres psql -U postgres -c "select * from pg_user where usename='root'" | grep -c root
 #     EOH
@@ -46,21 +47,19 @@ include_recipe "postgresql::server"
 # end
 
 if (node[:postgresql][:dbuser] != nil)
-  execute "create-database-user" do
-      code = <<-EOH
-      sudo -u postgres psql -U postgres -c "select * from pg_user where usename='#{node[:postgresql][:dbuser]}'" | grep -c #{node[:postgresql][:dbuser]}
-      EOH
-      command "sudo -u postgres createuser -U postgres -sw #{node[:postgresql][:dbuser]}"
-      not_if code
+  execute :create_database_user do
+      user "postgres"
+      command "createuser -U postgres -sw #{node[:postgresql][:dbuser]}; psql -U postgres -c \"ALTER USER #{node[:postgresql][:dbuser]} WITH PASSWORD '#{node[:postgresql][:dbpass]}';\""
+      not_if "psql -U postgres -c \"select * from pg_user where usename='#{node[:postgresql][:dbuser]}'\" | grep -c #{node[:postgresql][:dbuser]}", :user => 'postgres'
+      action :run
   end
 end
 
 if (!node[:postgresql][:dbuser] != nil && node[:postgresql][:dbname] != nil)
-  execute "create-database" do
-      exists = <<-EOH
-      sudo -u postgres psql -U postgres -c "select * from pg_database WHERE datname='#{node[:postgresql][:dbname]}'" | grep -c #{node[:postgresql][:dbname]}
-      EOH
-      command "sudo -u postgres createdb -U postgres -O #{node[:postgresql][:dbuser]} -T template0 #{node[:postgresql][:dbname]}"
-      not_if exists
+  execute :create_database do
+      user "postgres"
+      command "createdb -U postgres -O #{node[:postgresql][:dbuser]} -E 'UTF8' -l 'en_US.UTF8' -T template0 #{node[:postgresql][:dbname]}"
+      not_if "psql -U postgres -c \"select * from pg_database WHERE datname='#{node[:postgresql][:dbname]}'\" | grep -c #{node[:postgresql][:dbname]}", :user => 'postgres'
+      action :run
   end
 end

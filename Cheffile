@@ -22,7 +22,7 @@ cookbook "varnish"
 cookbook "zsh"
 
 cookbook 'drush',
-  :git => 'https://github.com/msonnabaum/chef-drush.git',
+  :git => 'https://github.com/vasilykraev/chef-drush.git',
   :ref => 'master'
 
 cookbook 'platform_packages',
