@@ -1,8 +1,9 @@
 {
   "id"    : "ubuntu",
   "pkgs"  : [
+    { "name"    : "htop" },
     { "name"    : "make" },
     { "name"    : "mc" },
-    { "name"    : "htop" }
+    { "name"    : "sendmail-bin" }
   ]
 }
