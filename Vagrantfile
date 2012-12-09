@@ -56,6 +56,7 @@ Vagrant::Config.run do |config|
       chef.add_role "drupal_lamp"
       # chef.add_role "drupal_nginx"
       chef.add_recipe "drupal::dev"
+      chef.add_recipe "drupal::ci"
       
       # python & pgsql + postgis, zsh
       chef.add_role "addition"
