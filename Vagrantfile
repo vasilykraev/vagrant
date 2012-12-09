@@ -64,6 +64,8 @@ Vagrant::Config.run do |config|
         :doc_root => '/vagrant/public',
         :mysql => {
           :server_root_password => "root",
+          :server_debian_password => "root",
+          :server_repl_password => "root",
           :allow_remote_root => true,
           :bind_address => '0.0.0.0',
         },
