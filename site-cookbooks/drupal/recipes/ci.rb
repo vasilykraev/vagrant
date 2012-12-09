@@ -1,9 +1,6 @@
 php_pear_channel "components.ez.no" do
   action :discover
 end
-php_pear_channel "pear.symfony-project.com" do
-  action :discover
-end
 
 # phing
 dc = php_pear_channel "pear.phing.info" do
@@ -51,7 +48,7 @@ php_pear "Finder" do
   action :install
 end
 
-# PHPUnit & other
+# PHPUnit
 dc = php_pear_channel "pear.phpunit.de" do
   action :discover
 end
