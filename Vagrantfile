@@ -17,7 +17,7 @@ Vagrant::Config.run do |config|
   
   # config.vm.boot_mode = :gui
   
-  config.vm.customize ["modifyvm", :id, "--memory", "512"]
+  config.vm.customize ["modifyvm", :id, "--memory", "768"]
   # config.vm.customize ["modifyvm", :id, "--memory", "1024"]
 
   # host, bridge
@@ -96,7 +96,7 @@ Vagrant::Config.run do |config|
          :version => '5.7.0',
         },
         :phing => {
-          :version => '2.3.3',
+          :version => '2.4.14',
         }
   	  })
       # f = File.open("del_me_to_first_run", "w")

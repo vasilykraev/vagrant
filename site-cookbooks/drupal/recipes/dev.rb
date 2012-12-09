@@ -19,20 +19,6 @@ php_pear "xhprof" do
   action :install
 end
 
-
-# PHING
-dc = php_pear_channel "pear.phing.info" do
-  action :discover
-end
-
-php_pear "phing" do
-  preferred_state "stable"
-  version node['phing']['version']
-  channel dc.channel_name
-  action :install
-end
-
-
 # PGSQL DB/USER
 include_recipe "postgis2::fix_locale"
 include_recipe "postgresql::server"
