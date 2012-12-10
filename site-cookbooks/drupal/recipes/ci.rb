@@ -10,6 +10,7 @@ php_pear "phing" do
   preferred_state "stable"
   version node['phing']['version']
   channel dc.channel_name
+  options "--alldeps"
   action :install
 end
 
@@ -20,6 +21,7 @@ end
 php_pear "PHP_Depend" do
   channel dc.channel_name
   action :install
+  options "--alldeps"
 end
 
 # PMD
@@ -28,7 +30,7 @@ dc = php_pear_channel "pear.phpmd.org" do
 end
 php_pear "PHP_PMD" do
   channel dc.channel_name
-  options "-a"
+  options "--alldeps"
   action :install
 end
 
@@ -63,6 +65,7 @@ end
 php_pear "PHP_CodeBrowser" do
   channel dc.channel_name
   action :install
+  options "--alldeps"
 end
 
 # Other
@@ -71,6 +74,7 @@ php_pear "PHPDocumentor" do
 end
 php_pear "PHP_CodeSniffer" do
   action :install
+  options "--alldeps"
 end
 php_pear "HTTP_Request2" do
   action :install
