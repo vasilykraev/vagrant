@@ -48,13 +48,15 @@ Vagrant::Config.run do |config|
       # puts "It's first run of box, and not be initialized by chef"
       
       chef.log_level = :debug # :info
+      # set timezone to Moscow UTC+4
+      chef.add_recipe "drupal::init"
       # install make & mc, apt
       chef.add_recipe "platform_packages::data_bag"
       chef.add_recipe "apt"
 
       # lamp/nginx & drupal
-      chef.add_role "drupal_lamp"
       # chef.add_role "drupal_nginx"
+      chef.add_role "drupal_lamp"
       chef.add_recipe "drupal::dev"
       chef.add_recipe "drupal::ci"
       chef.add_recipe "drupal::jenkins"
