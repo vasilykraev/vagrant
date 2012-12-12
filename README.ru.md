@@ -13,7 +13,7 @@
 * `gem install bundler librarian`
 * `git clone https://github.com/vasilykraev/vagrant.git vagrant.git`
 * `cd vagrant`
-* `linrarian-chef install`
+* `librarian-chef install`
 
 
 ## Запуск
