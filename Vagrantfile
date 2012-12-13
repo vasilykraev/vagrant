@@ -57,12 +57,12 @@ Vagrant::Config.run do |config|
       # lamp/nginx & drupal
       # chef.add_role "drupal_nginx"
       chef.add_role "drupal_lamp"
+      # dev
       chef.add_recipe "drupal::dev"
-      chef.add_recipe "drupal::ci"
-      chef.add_recipe "drupal::jenkins"
-      
       # python & pgsql + postgis, zsh
       chef.add_role "addition"
+      # phing & jenkins
+      chef.add_recipe "drupal::ci"
 
       chef.json.merge!({
         :doc_root => '/vagrant/public',
@@ -75,7 +75,7 @@ Vagrant::Config.run do |config|
         },
         :postgresql => {
           :password => {
-            :postgres => "root",
+            :postgres => "postgres",
           },
           # configure pgsql to allow remote connections
           :pg_hba => [
