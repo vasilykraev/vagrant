@@ -10,7 +10,6 @@ php_pear "phing" do
   preferred_state "stable"
   version node['phing']['version']
   channel dc.channel_name
-  options "-a"
   action :install
 end
 
@@ -70,7 +69,6 @@ end
 php_pear "PHP_CodeBrowser" do
   channel dc.channel_name
   action :install
-  options "-a"
 end
 
 # Other
@@ -79,8 +77,38 @@ php_pear "PHPDocumentor" do
 end
 php_pear "PHP_CodeSniffer" do
   action :install
-  options "-a"
 end
 php_pear "HTTP_Request2" do
   action :install
+end
+
+# JENKINS
+include_recipe "apt"
+include_recipe "java"
+
+apt_repository "jenkins" do
+  uri "http://pkg.jenkins-ci.org/debian"
+  key "http://pkg.jenkins-ci.org/debian/jenkins-ci.org.key"
+  components ["binary/"]
+  action :add
+end
+
+package "jenkins"
+
+service "jenkins" do
+  supports [:stop, :start, :restart]
+  action [:start, :enable]
+end
+
+execute :install_jenkins_plugins do
+  user "vagrant"
+  command "
+wget http://127.0.0.1:8080/jnlpJars/jenkins-cli.jar -O /home/vagrant/jenkins-cli.jar;
+cd /home/vagrant/;
+chmod +x jenkins-cli.jar;
+java -jar jenkins-cli.jar -s http://localhost:8080 install-plugin analysis-core analysis-collector checkstyle dry phing plot pmd timestamper console-column-plugin compact-columns build-timeout;
+java -jar jenkins-cli.jar -s http://127.0.0.1:8080 safe-restart;
+"
+  not_if "test -e jenkins-cli.jar"
+  action :run
 end
