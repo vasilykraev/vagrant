@@ -23,29 +23,28 @@ end
 include_recipe "postgis2::fix_locale"
 include_recipe "postgresql::server"
 
-# execute "create-root-user" do
-#     user "postgres"
-#     code = <<-EOH
-#     sudo -u postgres psql -U postgres -c "select * from pg_user where usename='root'" | grep -c root
-#     EOH
-#     command "sudo -u postgres createuser -U postgres -s root"
-#     not_if code
-# end
-
 if (node[:postgresql][:dbuser] != nil)
   execute :create_database_user do
-      user "postgres"
-      command "createuser -U postgres -sw #{node[:postgresql][:dbuser]}; psql -U postgres -c \"ALTER USER #{node[:postgresql][:dbuser]} WITH PASSWORD '#{node[:postgresql][:dbpass]}';\""
-      not_if "psql -U postgres -c \"select * from pg_user where usename='#{node[:postgresql][:dbuser]}'\" | grep -c #{node[:postgresql][:dbuser]}", :user => 'postgres'
-      action :run
+    user "postgres"
+    command "createuser -U postgres -sw #{node[:postgresql][:dbuser]}; psql -U postgres -c \"ALTER USER #{node[:postgresql][:dbuser]} WITH PASSWORD '#{node[:postgresql][:dbpass]}';\""
+    not_if "psql -U postgres -c \"select * from pg_user where usename='#{node[:postgresql][:dbuser]}'\" | grep -c #{node[:postgresql][:dbuser]}", :user => 'postgres'
+    action :run
   end
 end
 
 if (!node[:postgresql][:dbuser] != nil && node[:postgresql][:dbname] != nil)
   execute :create_database do
-      user "postgres"
-      command "createdb -U postgres -O #{node[:postgresql][:dbuser]} -E 'UTF8' -l 'en_US.UTF8' -T template0 #{node[:postgresql][:dbname]}"
-      not_if "psql -U postgres -c \"select * from pg_database WHERE datname='#{node[:postgresql][:dbname]}'\" | grep -c #{node[:postgresql][:dbname]}", :user => 'postgres'
+    user "postgres"
+    command "createdb -U postgres -O #{node[:postgresql][:dbuser]} -E 'UTF8' -l 'en_US.UTF8' -T template0 #{node[:postgresql][:dbname]}"
+    not_if "psql -U postgres -c \"select * from pg_database WHERE datname='#{node[:postgresql][:dbname]}'\" | grep -c #{node[:postgresql][:dbname]}", :user => 'postgres'
+    action :run
+  end
+end
+
+# create .pgpass
+if (!node[:postgresql][:dbuser] != nil && node[:postgresql][:dbname] != nil)
+  execute :create_pgpass_file do
+      command "echo \"localhost:#{node[:postgresql][:config][:port]}:#{node[:postgresql][:dbname]}:#{node[:postgresql][:dbuser]}:#{node[:postgresql][:dbpass]}\" > /home/vagrant/.pgpass; chmod 600 /home/vagrant/.pgpass"
       action :run
   end
 end
