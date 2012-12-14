@@ -102,13 +102,11 @@ end
 
 execute :install_jenkins_plugins do
   user "vagrant"
-  command "
-wget http://127.0.0.1:8080/jnlpJars/jenkins-cli.jar -O /home/vagrant/jenkins-cli.jar;
-cd /home/vagrant/;
-chmod +x jenkins-cli.jar;
-java -jar jenkins-cli.jar -s http://localhost:8080 install-plugin analysis-core analysis-collector checkstyle dry phing plot pmd timestamper console-column-plugin compact-columns build-timeout;
-java -jar jenkins-cli.jar -s http://127.0.0.1:8080 safe-restart;
-"
+  command "wget http://127.0.0.1:8080/jnlpJars/jenkins-cli.jar -O /home/vagrant/jenkins-cli.jar;
+chmod +x /home/vagrant/jenkins-cli.jar;
+java -jar /home/vagrant/jenkins-cli.jar -s http://localhost:8080 install-plugin analysis-core analysis-collector checkstyle dry phing plot pmd timestamper console-column-plugin compact-columns build-timeout greenballs;
+java -jar /home/vagrant/jenkins-cli.jar -s http://127.0.0.1:8080 safe-restart;"
   not_if "test -e jenkins-cli.jar"
   action :run
+  ignore_failure true
 end
