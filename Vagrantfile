@@ -1,11 +1,5 @@
 # -*- mode: ruby -*-
 
-# TODO
-# check OS & nfsd
-# .ssh mount
-# pma pga zsh
-# autoadd domains to /etc/hosts at guest machine
-
 Vagrant::Config.run do |config|
 
   config.vm.box = "precise32"
@@ -22,6 +16,11 @@ Vagrant::Config.run do |config|
 
   # host, bridge
   network = "host"
+  if ENV["OS"].to_s.include? "Windows" then
+    nfsd = false
+  else
+    nfsd = true
+  end
 
   if network == "host" 
     config.vm.network :hostonly, "33.33.33.10"
@@ -29,8 +28,7 @@ Vagrant::Config.run do |config|
     config.vm.forward_port 8080, 8080
     config.vm.forward_port 3306, 3306
     config.vm.forward_port 5432, 5432
-    config.vm.share_folder "v-data", "/vagrant", ".", :nfs => true
-    # config.vm.share_folder "v-ssh", "~/.ssh", "~/.ssh", :nfs => true
+    config.vm.share_folder "v-data", "/vagrant", ".", :nfs => nfsd
   end
 
   if network == "bridge" 
@@ -107,7 +105,7 @@ Vagrant::Config.run do |config|
       # f.write("delete this file to initial run chef")
     else
       # puts "Vagrant box has already been initialized"
-      chef.add_recipe "dummy"
+      chef.add_recipe "drupal::init"
     end
   end
 end
