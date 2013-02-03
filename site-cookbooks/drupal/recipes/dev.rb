@@ -44,7 +44,8 @@ end
 # create .pgpass
 if (!node[:postgresql][:dbuser] != nil && node[:postgresql][:dbname] != nil)
   execute :create_pgpass_file do
-      command "echo \"localhost:#{node[:postgresql][:config][:port]}:#{node[:postgresql][:dbname]}:#{node[:postgresql][:dbuser]}:#{node[:postgresql][:dbpass]}\" > /home/vagrant/.pgpass; chmod 600 /home/vagrant/.pgpass"
-      action :run
+    user "vagrant"
+    command "echo \"localhost:#{node[:postgresql][:config][:port]}:#{node[:postgresql][:dbname]}:#{node[:postgresql][:dbuser]}:#{node[:postgresql][:dbpass]}\" > /home/vagrant/.pgpass; chmod 600 /home/vagrant/.pgpass"
+    action :run
   end
 end
